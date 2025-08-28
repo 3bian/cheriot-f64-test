@@ -64,12 +64,12 @@ void test_info_and_special_values()
     Debug::log("-inf = {}", negativeInfinity);
     Debug::log(" NaN = {}", std::numeric_limits<double>::quiet_NaN());
 
-    //Debug::log("isinf(+inf)=%", std::isinf(positiveInfinity));
-    //Debug::log("isinf(-inf)=%", std::isinf(negativeInfinity));
-    //Debug::log("isnan(NaN)=%",  std::isnan(std::numeric_limits<double>::quiet_NaN()));
+    Debug::log("isinf(+inf)=%", __builtin_isnan(positiveInfinity));
+    Debug::log("isinf(-inf)=%", __builtin_isinf(negativeInfinity));
+    Debug::log("isnan(NaN)=%",  __builtin_isnan(std::numeric_limits<double>::quiet_NaN()));
 
-    //Debug::log("signbit(+0)=%", std::signbit(0.0));
-    //Debug::log("signbit(-0)=%", std::signbit(-0.0));
+    Debug::log("signbit(+0)=%", __builtin_signbit(0.0));
+    Debug::log("signbit(-0)=%", __builtin_signbit(-0.0));
 
     Debug::log("1/+0 = {}", 1.0 /  0.0);
     Debug::log("1/-0 = {}", 1.0 / -0.0);
@@ -93,15 +93,15 @@ void test_binary_ops(const std::array<double, testValues.size()>& values)
                 const double result = op.function(leftOperand, rightOperand);
                 Debug::log(" {} {} {} = {}", leftOperand, op.label, rightOperand, result);
 
-                //if (std::isnan(result))
-                //{
-                //    Debug::log(" [NaN]");
-                //}
+                if (__builtin_isnan(result))
+                {
+                    Debug::log(" [NaN]");
+                }
 
-                //if (std::isinf(result))
-                //{
-                //    Debug::log(" [{}]", std::signbit(result) ? '-' : '+');
-                //}
+                if (__builtin_isinf(result))
+                {
+                    Debug::log(" [{}]", __builtin_signbit(result) ? '-' : '+');
+                }
             }
         }
     }
